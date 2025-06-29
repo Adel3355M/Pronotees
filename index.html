@@ -1,0 +1,853 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>French School Portal Dashboard</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <!-- Page de connexion -->
+    <div id="loginPage" class="login-page">
+        <div class="login-container">
+            <div class="login-header">
+                <div class="logo-section">
+                    <img src="https://images.pexels.com/photos/1509428/pexels-photo-1509428.jpeg?auto=compress&cs=tinysrgb&w=60&h=40&fit=crop" alt="Île-de-France" class="logo">
+                    <div class="brand">
+                        mon <span class="brand-accent">Lycée</span>.net
+                    </div>
+                </div>
+                <h1>Connexion à l'espace élève</h1>
+                <p>LYCEE LOUISE MICHEL LYCEE POLYVALENT REGIONAL</p>
+            </div>
+
+            <div class="login-form-container">
+                <form id="loginForm" class="login-form">
+                    <div class="form-group">
+                        <label for="username">Identifiant</label>
+                        <div class="input-group">
+                            <i class="fas fa-user"></i>
+                            <input type="text" id="username" placeholder="Votre identifiant" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="password">Mot de passe</label>
+                        <div class="input-group">
+                            <i class="fas fa-lock"></i>
+                            <input type="password" id="password" placeholder="Votre mot de passe" required>
+                            <button type="button" class="toggle-password" onclick="togglePassword()">
+                                <i class="fas fa-eye" id="passwordToggleIcon"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div id="loginError" class="error-message" style="display: none;">
+                        <i class="fas fa-exclamation-circle"></i>
+                        <span id="errorText"></span>
+                    </div>
+
+                    <div class="form-options">
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="rememberMe">
+                            <span>Se souvenir de moi</span>
+                        </label>
+                        <button type="button" class="forgot-password">Mot de passe oublié ?</button>
+                    </div>
+
+                    <button type="submit" class="login-btn" id="loginBtn">
+                        <span id="loginBtnText">Se connecter</span>
+                        <div id="loginSpinner" class="spinner" style="display: none;"></div>
+                    </button>
+                </form>
+            </div>
+
+            <div class="login-footer">
+                <div class="pronote-brand">PRONOTE</div>
+                <p>© 2025 Index Éducation - Tous droits réservés</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Application principale -->
+    <div id="mainApp" class="main-app" style="display: none;">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-content">
+                <div class="header-left">
+                    <img src="https://images.pexels.com/photos/1509428/pexels-photo-1509428.jpeg?auto=compress&cs=tinysrgb&w=60&h=40&fit=crop" alt="Île-de-France" class="header-logo">
+                    <div class="header-brand">
+                        mon <span class="brand-accent">Lycée</span>.net
+                    </div>
+                </div>
+                
+                <div class="header-right">
+                    <div class="user-info">
+                        <div class="user-details">
+                            <div class="school-name">LYCEE LOUISE MICHEL LYCEE POLYVALENT REGIONAL</div>
+                            <div class="student-info">Espace Élèves - GLODEAN Giorgiana (1 STMG2)</div>
+                        </div>
+                        <div class="user-avatar">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <button class="logout-btn" onclick="logout()">
+                            <i class="fas fa-sign-out-alt"></i>
+                            <span>Déconnexion</span>
+                        </button>
+                        <div class="pronote-logo">PRONOTE</div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Navigation -->
+        <nav class="navigation">
+            <div class="nav-content">
+                <div class="nav-desktop">
+                    <button class="nav-item active" data-page="home">
+                        <i class="fas fa-home"></i>
+                        <span>Page d'accueil</span>
+                    </button>
+                    <button class="nav-item" data-page="mes-donnees">
+                        <i class="fas fa-file-text"></i>
+                        <span>Mes données</span>
+                    </button>
+                    <button class="nav-item" data-page="cahier-textes">
+                        <i class="fas fa-book-open"></i>
+                        <span>Cahier de textes</span>
+                    </button>
+                    <button class="nav-item" data-page="notes">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Notes</span>
+                    </button>
+                    <button class="nav-item" data-page="vie-scolaire">
+                        <i class="fas fa-calendar"></i>
+                        <span>Vie scolaire</span>
+                    </button>
+                </div>
+                
+                <div class="nav-mobile">
+                    <button class="mobile-menu-btn" onclick="toggleMobileMenu()">
+                        <i class="fas fa-bars" id="mobileMenuIcon"></i>
+                        <span id="currentPageTitle">Page d'accueil</span>
+                    </button>
+                    <div class="mobile-menu" id="mobileMenu" style="display: none;">
+                        <button class="mobile-nav-item active" data-page="home">
+                            <i class="fas fa-home"></i>
+                            <span>Page d'accueil</span>
+                        </button>
+                        <button class="mobile-nav-item" data-page="mes-donnees">
+                            <i class="fas fa-file-text"></i>
+                            <span>Mes données</span>
+                        </button>
+                        <button class="mobile-nav-item" data-page="cahier-textes">
+                            <i class="fas fa-book-open"></i>
+                            <span>Cahier de textes</span>
+                        </button>
+                        <button class="mobile-nav-item" data-page="notes">
+                            <i class="fas fa-file-alt"></i>
+                            <span>Notes</span>
+                        </button>
+                        <button class="mobile-nav-item" data-page="vie-scolaire">
+                            <i class="fas fa-calendar"></i>
+                            <span>Vie scolaire</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Contenu principal -->
+        <main class="main-content">
+            <!-- Page d'accueil -->
+            <div id="homePage" class="page active">
+                <div class="dashboard-grid">
+                    <!-- Emploi du temps -->
+                    <div class="schedule-section">
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="card-title">
+                                    <i class="fas fa-calendar"></i>
+                                    <h2>Emploi du temps</h2>
+                                </div>
+                                <div class="schedule-nav">
+                                    <button class="nav-btn" onclick="previousDay()">
+                                        <i class="fas fa-chevron-left"></i>
+                                    </button>
+                                    <span id="currentWeekLabel">Lundi 2 septembre</span>
+                                    <button class="nav-btn" onclick="nextDay()">
+                                        <i class="fas fa-chevron-right"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="card-content">
+                                <div id="scheduleContent" class="schedule-content">
+                                    <!-- Le contenu sera généré par JavaScript -->
+                                </div>
+                                <div class="schedule-legend">
+                                    <div class="legend-item">
+                                        <div class="legend-color bg-red-200"></div>
+                                        <span>Français/Espagnol</span>
+                                    </div>
+                                    <div class="legend-item">
+                                        <div class="legend-color bg-teal-200"></div>
+                                        <span>Mathématiques</span>
+                                    </div>
+                                    <div class="legend-item">
+                                        <div class="legend-color bg-gray-200"></div>
+                                        <span>Gestion</span>
+                                    </div>
+                                    <div class="legend-item">
+                                        <div class="legend-color bg-blue-200"></div>
+                                        <span>Anglais/EPS</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Section centrale -->
+                    <div class="center-section">
+                        <!-- Travail à faire -->
+                        <div class="card">
+                            <div class="card-header">
+                                <h2>Travail à faire</h2>
+                                <div class="task-count">
+                                    <i class="fas fa-clock"></i>
+                                    <span id="taskCount">5 tâches</span>
+                                </div>
+                            </div>
+                            <div class="card-content">
+                                <div id="homeworkList" class="homework-list">
+                                    <!-- Le contenu sera généré par JavaScript -->
+                                </div>
+                                <button class="view-all-btn">
+                                    Voir tout le travail à faire
+                                    <i class="fas fa-chevron-right"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Carnet de correspondance -->
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="card-title">
+                                    <i class="fas fa-message"></i>
+                                    <h2>Carnet de correspondance</h2>
+                                </div>
+                            </div>
+                            <div class="card-content">
+                                <div class="correspondence-item">
+                                    <i class="fas fa-exclamation-triangle text-red-500"></i>
+                                    <div>
+                                        <div class="font-semibold text-red-600">Absence non justifiée</div>
+                                        <div class="text-sm text-gray-600">le 11 juin de 9h00 à 11h10</div>
+                                    </div>
+                                </div>
+                                <div class="correspondence-section">
+                                    <div class="section-header">
+                                        <i class="fas fa-trending-up text-green-600"></i>
+                                        <h3>Dernières notes</h3>
+                                    </div>
+                                    <p class="text-gray-600">Aucune nouvelle note</p>
+                                    <p class="text-gray-600">Aucune nouvelle note</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Ressources pédagogiques -->
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="card-title">
+                                    <i class="fas fa-folder"></i>
+                                    <h2>Ressources pédagogiques</h2>
+                                </div>
+                            </div>
+                            <div class="card-content">
+                                <div id="resourcesList" class="resources-list">
+                                    <!-- Le contenu sera généré par JavaScript -->
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Agenda -->
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="card-title">
+                                    <i class="fas fa-calendar-alt"></i>
+                                    <h2>Agenda</h2>
+                                </div>
+                                <button class="add-btn">
+                                    <i class="fas fa-plus"></i>
+                                </button>
+                            </div>
+                            <div class="card-content">
+                                <div class="empty-state">
+                                    <i class="fas fa-calendar-alt"></i>
+                                    <p>Aucun événement à venir</p>
+                                    <small>Votre agenda est libre</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Panneau d'informations -->
+                    <div class="info-section">
+                        <!-- Informations -->
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="card-title">
+                                    <i class="fas fa-bell"></i>
+                                    <h2>Informations</h2>
+                                </div>
+                            </div>
+                            <div class="card-content">
+                                <div id="infoList" class="info-list">
+                                    <!-- Le contenu sera généré par JavaScript -->
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Discussions -->
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="card-title">
+                                    <i class="fas fa-comments"></i>
+                                    <h2>Discussions</h2>
+                                </div>
+                            </div>
+                            <div class="card-content">
+                                <div class="empty-state">
+                                    <i class="fas fa-comments"></i>
+                                    <p>Aucun nouveau message</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Menu cantine -->
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="card-title">
+                                    <span class="emoji">🍽️</span>
+                                    <h2>Menu cantine</h2>
+                                </div>
+                            </div>
+                            <div class="card-content">
+                                <div class="menu-nav">
+                                    <button class="nav-btn">
+                                        <i class="fas fa-chevron-left"></i>
+                                    </button>
+                                    <span>Aujourd'hui</span>
+                                    <button class="nav-btn">
+                                        <i class="fas fa-chevron-right"></i>
+                                    </button>
+                                </div>
+                                <div class="empty-state">
+                                    <span class="emoji">🍽️</span>
+                                    <p>Aucun menu disponible</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Page Mes données -->
+            <div id="mesDonneesPage" class="page">
+                <div class="page-header">
+                    <button class="back-btn" onclick="goToPage('home')">
+                        <i class="fas fa-arrow-left"></i>
+                        <span>Retour</span>
+                    </button>
+                    <div class="divider"></div>
+                    <h1>Mes données</h1>
+                </div>
+
+                <div class="data-page-layout">
+                    <div class="sidebar">
+                        <div class="sidebar-section">
+                            <h3>Compte</h3>
+                            <button class="sidebar-item active" data-section="profile">
+                                <i class="fas fa-user"></i>
+                                <span>Mon profil</span>
+                            </button>
+                            <button class="sidebar-item" data-section="security">
+                                <i class="fas fa-shield-alt"></i>
+                                <span>Sécurisation du compte</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="content-area">
+                        <!-- Section Profil -->
+                        <div id="profileSection" class="data-section active">
+                            <div class="info-banner">
+                                <h3>Les informations liées à mon compte</h3>
+                                <p>Ces informations sont synchronisées avec votre compte académique et ne peuvent pas être modifiées ici.</p>
+                            </div>
+
+                            <div class="profile-content">
+                                <h3>Coordonnées</h3>
+                                <div class="profile-info">
+                                    <div class="profile-avatar">
+                                        <i class="fas fa-user"></i>
+                                    </div>
+                                    <div class="contact-info">
+                                        <div class="contact-item">
+                                            <i class="fas fa-phone"></i>
+                                            <div>
+                                                <div class="label">Téléphone</div>
+                                                <div class="value">+ 33 7 58 57 01 53</div>
+                                            </div>
+                                        </div>
+                                        <div class="contact-item">
+                                            <i class="fas fa-envelope"></i>
+                                            <div>
+                                                <div class="label">Email</div>
+                                                <div class="value email">glodeangiorgiana101@gmail.com</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="ine-section">
+                                    <h3>Numéro INE</h3>
+                                    <div class="ine-box">
+                                        <div class="ine-number">180730194BC</div>
+                                        <p>Identifiant National Élève - Ce numéro vous suit tout au long de votre scolarité</p>
+                                    </div>
+                                </div>
+
+                                <div class="info-grid">
+                                    <div class="info-card">
+                                        <h4>Établissement</h4>
+                                        <p>LYCEE LOUISE MICHEL</p>
+                                        <p>LYCEE POLYVALENT REGIONAL</p>
+                                    </div>
+                                    <div class="info-card">
+                                        <h4>Classe</h4>
+                                        <p>1 STMG2</p>
+                                        <p>Première Sciences et Technologies du Management et de la Gestion</p>
+                                    </div>
+                                    <div class="info-card">
+                                        <h4>Année scolaire</h4>
+                                        <p>2024-2025</p>
+                                    </div>
+                                    <div class="info-card">
+                                        <h4>Statut</h4>
+                                        <p>Élève</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Section Sécurité -->
+                        <div id="securitySection" class="data-section">
+                            <div class="security-content">
+                                <h3>Sécurisation du compte</h3>
+                                <p>Gérez les paramètres de sécurité de votre compte pour protéger vos données personnelles.</p>
+
+                                <div class="password-section">
+                                    <h4>Changer le mot de passe</h4>
+                                    <p class="last-modified">Dernière modification : il y a 3 mois</p>
+
+                                    <div id="passwordSuccess" class="success-message" style="display: none;">
+                                        <i class="fas fa-check-circle"></i>
+                                        <span>Mot de passe mis à jour avec succès !</span>
+                                    </div>
+
+                                    <div id="passwordError" class="error-message" style="display: none;">
+                                        <span id="passwordErrorText"></span>
+                                    </div>
+
+                                    <form id="passwordForm" class="password-form">
+                                        <div class="form-group">
+                                            <label for="currentPassword">Mot de passe actuel</label>
+                                            <div class="input-group">
+                                                <input type="password" id="currentPassword" required>
+                                                <button type="button" class="toggle-password" onclick="togglePasswordField('currentPassword')">
+                                                    <i class="fas fa-eye"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="newPassword">Nouveau mot de passe</label>
+                                            <div class="input-group">
+                                                <input type="password" id="newPassword" minlength="8" required>
+                                                <button type="button" class="toggle-password" onclick="togglePasswordField('newPassword')">
+                                                    <i class="fas fa-eye"></i>
+                                                </button>
+                                            </div>
+                                            <p class="help-text">Le mot de passe doit contenir au moins 8 caractères</p>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="confirmPassword">Confirmer le nouveau mot de passe</label>
+                                            <div class="input-group">
+                                                <input type="password" id="confirmPassword" required>
+                                                <button type="button" class="toggle-password" onclick="togglePasswordField('confirmPassword')">
+                                                    <i class="fas fa-eye"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-actions">
+                                            <button type="submit" class="btn-primary">Mettre à jour le mot de passe</button>
+                                            <button type="button" class="btn-secondary" onclick="resetPasswordForm()">Annuler</button>
+                                        </div>
+                                    </form>
+                                </div>
+
+                                <div class="security-tips">
+                                    <h4>Conseils de sécurité</h4>
+                                    <ul>
+                                        <li>• Utilisez un mot de passe unique et complexe</li>
+                                        <li>• Ne partagez jamais vos identifiants de connexion</li>
+                                        <li>• Déconnectez-vous toujours après utilisation</li>
+                                        <li>• Signalez toute activité suspecte à l'administration</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Page Notes -->
+            <div id="notesPage" class="page">
+                <div class="page-header">
+                    <button class="back-btn" onclick="goToPage('home')">
+                        <i class="fas fa-arrow-left"></i>
+                        <span>Retour</span>
+                    </button>
+                    <div class="divider"></div>
+                    <h1>Notes</h1>
+                </div>
+
+                <div class="notes-container">
+                    <!-- Onglets -->
+                    <div class="tabs-container">
+                        <button class="tab-btn active" data-tab="notes" onclick="switchNotesTab('notes')">Mes notes</button>
+                        <button class="tab-btn" data-tab="bulletins" onclick="switchNotesTab('bulletins')">Bulletins</button>
+                    </div>
+
+                    <!-- Onglet Notes -->
+                    <div id="notesTab" class="tab-content active">
+                        <!-- Sélecteur de trimestre -->
+                        <div class="notes-header">
+                            <h2>Mon bulletin de notes</h2>
+                            <div class="trimester-selector">
+                                <select id="trimesterSelect">
+                                    <option value="1">Trimestre 1</option>
+                                    <option value="2">Trimestre 2</option>
+                                    <option value="3" selected>Trimestre 3</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Tableau des notes -->
+                        <div class="notes-table-container">
+                            <table class="notes-table">
+                                <thead>
+                                    <tr>
+                                        <th>Matières</th>
+                                        <th>Moyennes<br><small>Élève / Classe</small></th>
+                                        <th>Appréciations</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="notesTableBody">
+                                    <!-- Contenu généré par JavaScript -->
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <!-- Informations complémentaires -->
+                        <div class="notes-footer">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h3>Vie scolaire</h3>
+                                </div>
+                                <div class="card-content">
+                                    <p id="absencesInfo">Absences : 40 demi-journées (81h00) dont 35 sont non justifiées (69h00)</p>
+                                </div>
+                            </div>
+
+                            <div class="card">
+                                <div class="card-header">
+                                    <h3>Appréciations générales</h3>
+                                </div>
+                                <div class="card-content">
+                                    <p id="globalAppreciation">Progrès notable ce trimestre. Continuez sur cette lancée pour l'année prochaine.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Onglet Bulletins -->
+                    <div id="bulletinsTab" class="tab-content">
+                        <div class="bulletins-container">
+                            <div class="bulletins-header">
+                                <h2>Bulletins scolaires</h2>
+                                <div class="bulletins-count">
+                                    <i class="fas fa-file-pdf"></i>
+                                    <span>3 bulletins disponibles</span>
+                                </div>
+                            </div>
+
+                            <div class="bulletins-list">
+                                <div class="bulletin-item">
+                                    <div class="bulletin-icon">
+                                        <i class="fas fa-file-pdf"></i>
+                                    </div>
+                                    <div class="bulletin-info">
+                                        <h3>Bulletin Trimestre 1</h3>
+                                        <div class="bulletin-meta">
+                                            <span>Généré le 20/12/2024</span>
+                                            <span>•</span>
+                                            <span>245 KB</span>
+                                            <span>•</span>
+                                            <span class="status-available">Disponible</span>
+                                        </div>
+                                    </div>
+                                    <button class="download-btn" onclick="downloadBulletin(1)">
+                                        <i class="fas fa-download"></i>
+                                        <span>Télécharger PDF</span>
+                                    </button>
+                                </div>
+
+                                <div class="bulletin-item">
+                                    <div class="bulletin-icon">
+                                        <i class="fas fa-file-pdf"></i>
+                                    </div>
+                                    <div class="bulletin-info">
+                                        <h3>Bulletin Trimestre 2</h3>
+                                        <div class="bulletin-meta">
+                                            <span>Généré le 15/03/2025</span>
+                                            <span>•</span>
+                                            <span>238 KB</span>
+                                            <span>•</span>
+                                            <span class="status-available">Disponible</span>
+                                        </div>
+                                    </div>
+                                    <button class="download-btn" onclick="downloadBulletin(2)">
+                                        <i class="fas fa-download"></i>
+                                        <span>Télécharger PDF</span>
+                                    </button>
+                                </div>
+
+                                <div class="bulletin-item">
+                                    <div class="bulletin-icon">
+                                        <i class="fas fa-file-pdf"></i>
+                                    </div>
+                                    <div class="bulletin-info">
+                                        <h3>Bulletin Trimestre 3</h3>
+                                        <div class="bulletin-meta">
+                                            <span>Généré le 20/06/2025</span>
+                                            <span>•</span>
+                                            <span>251 KB</span>
+                                            <span>•</span>
+                                            <span class="status-available">Disponible</span>
+                                        </div>
+                                    </div>
+                                    <button class="download-btn" onclick="downloadBulletin(3)">
+                                        <i class="fas fa-download"></i>
+                                        <span>Télécharger PDF</span>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div class="bulletins-info">
+                                <div class="info-box">
+                                    <div class="info-icon">
+                                        <i class="fas fa-info-circle"></i>
+                                    </div>
+                                    <div class="info-content">
+                                        <h4>Information</h4>
+                                        <p>Les bulletins sont générés automatiquement à la fin de chaque trimestre. Vous pouvez les télécharger au format PDF pour les imprimer ou les conserver.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Page Vie scolaire -->
+            <div id="vieScolairePage" class="page">
+                <div class="page-header">
+                    <button class="back-btn" onclick="goToPage('home')">
+                        <i class="fas fa-arrow-left"></i>
+                        <span>Retour</span>
+                    </button>
+                    <div class="divider"></div>
+                    <h1>Vie scolaire</h1>
+                </div>
+
+                <div class="vie-scolaire-container">
+                    <!-- Emploi du temps complet -->
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">
+                                <i class="fas fa-calendar"></i>
+                                <h2>Emploi du temps</h2>
+                            </div>
+                            <div class="schedule-nav">
+                                <button class="nav-btn" onclick="previousWeekVieScolaire()">
+                                    <i class="fas fa-chevron-left"></i>
+                                </button>
+                                <span id="currentWeekLabelVieScolaire">Semaine du 2 au 6 septembre</span>
+                                <button class="nav-btn" onclick="nextWeekVieScolaire()">
+                                    <i class="fas fa-chevron-right"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="card-content">
+                            <!-- Tableau de la semaine complète -->
+                            <div class="schedule-table-container">
+                                <table class="schedule-table">
+                                    <thead>
+                                        <tr>
+                                            <th class="time-column"></th>
+                                            <th id="mondayHeader">Lundi</th>
+                                            <th id="tuesdayHeader">Mardi</th>
+                                            <th id="wednesdayHeader">Mercredi</th>
+                                            <th id="thursdayHeader">Jeudi</th>
+                                            <th id="fridayHeader">Vendredi</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="vieScolaireScheduleTable">
+                                        <!-- Le contenu sera généré par JavaScript -->
+                                    </tbody>
+                                </table>
+                            </div>
+                            
+                            <div class="schedule-legend">
+                                <div class="legend-item">
+                                    <div class="legend-color bg-red-200"></div>
+                                    <span>Français/Espagnol</span>
+                                </div>
+                                <div class="legend-item">
+                                    <div class="legend-color bg-teal-200"></div>
+                                    <span>Mathématiques</span>
+                                </div>
+                                <div class="legend-item">
+                                    <div class="legend-color bg-gray-200"></div>
+                                    <span>Gestion</span>
+                                </div>
+                                <div class="legend-item">
+                                    <div class="legend-color bg-blue-200"></div>
+                                    <span>Anglais/EPS</span>
+                                </div>
+                                <div class="legend-item">
+                                    <div class="legend-color bg-yellow-200"></div>
+                                    <span>Histoire-Géo</span>
+                                </div>
+                                <div class="legend-item">
+                                    <div class="legend-color bg-green-200"></div>
+                                    <span>Management/Étude</span>
+                                </div>
+                                <div class="legend-item">
+                                    <div class="legend-color bg-pink-200"></div>
+                                    <span>Droit-Économie</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Absences et retards -->
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">
+                                <i class="fas fa-exclamation-triangle"></i>
+                                <h2>Absences et retards</h2>
+                            </div>
+                        </div>
+                        <div class="card-content">
+                            <div class="absence-stats">
+                                <div class="stat-item">
+                                    <div class="stat-number">40</div>
+                                    <div class="stat-label">Demi-journées d'absence</div>
+                                </div>
+                                <div class="stat-item">
+                                    <div class="stat-number">35</div>
+                                    <div class="stat-label">Non justifiées</div>
+                                </div>
+                                <div class="stat-item">
+                                    <div class="stat-number">81h</div>
+                                    <div class="stat-label">Total heures</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Page Cahier de textes -->
+            <div id="cahierTextesPage" class="page">
+                <div class="page-header">
+                    <button class="back-btn" onclick="goToPage('home')">
+                        <i class="fas fa-arrow-left"></i>
+                        <span>Retour</span>
+                    </button>
+                    <div class="divider"></div>
+                    <h1>Cahier de textes</h1>
+                </div>
+
+                <div class="cahier-textes-container">
+                    <!-- Onglets -->
+                    <div class="tabs-container">
+                        <button class="tab-btn active" data-tab="contenu" onclick="switchCahierTextesTab('contenu')">Contenu et ressources</button>
+                        <button class="tab-btn" data-tab="travail" onclick="switchCahierTextesTab('travail')">Travail à faire</button>
+                    </div>
+
+                    <!-- Contenu des onglets -->
+                    <div id="contenuTab" class="tab-content active">
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="card-title">
+                                    <i class="fas fa-book-open"></i>
+                                    <h2>Contenu des cours</h2>
+                                </div>
+                            </div>
+                            <div class="card-content">
+                                <div id="coursContent" class="cours-content">
+                                    <!-- Contenu généré par JavaScript -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="travailTab" class="tab-content">
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="card-title">
+                                    <i class="fas fa-tasks"></i>
+                                    <h2>Travail à faire</h2>
+                                </div>
+                            </div>
+                            <div class="card-content">
+                                <div class="empty-state">
+                                    <!-- Icône simple sans papillons -->
+                                    <div class="simple-icon">
+                                        <i class="fas fa-book-open"></i>
+                                    </div>
+                                    <h3>Aucun travail à faire n'a été saisi depuis le 26/05/2025</h3>
+                                    <p>Profitez de ce moment de liberté ! Vos professeurs n'ont pas encore donné de nouveaux devoirs depuis cette date.</p>
+                                    <div class="action-buttons">
+                                        <button class="btn-primary">Actualiser</button>
+                                        <button class="btn-secondary">Voir l'historique</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
